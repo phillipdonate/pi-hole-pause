@@ -1,12 +1,12 @@
 # This is a simple script for temporarily disabling pi-hole DNS filtering.
-# Last updated for pi-hole 6.1.4
+# Last updated for pi-hole 6.4
 
 import os
 import requests
 
 PI_HOLE_IP_ADDRESS = os.getenv('PI_HOLE_IP_ADDRESS')
 PI_HOLE_APP_PASSWORD = os.getenv('PI_HOLE_APP_PASSWORD')
-PI_HOLE_DISABLE_TIME_IN_SEC = os.getenv('PI_HOLE_DISABLE_TIME_IN_SEC', 60)
+PI_HOLE_DISABLE_TIME_IN_SEC = int(os.getenv('PI_HOLE_DISABLE_TIME_IN_SEC', 60))
 PI_HOLE_API_URL = f"http://{PI_HOLE_IP_ADDRESS}/api"
 
 def main():
@@ -22,7 +22,7 @@ def main():
     sid = data['session']['sid']
 
     response = requests.post(
-        url = f"{PI_HOLE_API_URL}/dns/blocking/disable",
+        url = f"{PI_HOLE_API_URL}/dns/blocking",
         json = {
             'sid': sid,
             'blocking': False,
